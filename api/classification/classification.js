@@ -20,6 +20,7 @@ faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 let personDetectionModel = '';
 let maleClothingModel = '';
 let femaleClothingModel = '';
+let genderModel = '';
 let gestureModel = '';
 let toxicityModel = '';
 let modelsLoaded = false;
@@ -57,7 +58,13 @@ const loadModels = async () => {
 
     console.log('\nLoaded Female Model...\n');
 
-    // taking the longest
+    genderModel = await tfImage.load(
+      modelPaths.genderModel.model,
+      modelPaths.genderModel.metadata
+    );
+
+    console.log('\nLoaded Gender Model...\n');
+
     gestureModel = await tf.loadGraphModel(
       'file://classification/gestureDetection/model.json'
     );
@@ -149,15 +156,19 @@ const detectAgeGender = async (image) => {
   else {
     console.log('No faces detected');
 
-    // choose randomly and hope for the best
-    const genders = ['male', 'female'];
-    const random = genders[Math.floor(Math.random() * genders.length)];
+    let classifcation = await genderModel.predict(img);
+    let gender = '';
+
+    if (classifcation[0].probability > classifcation[1].probability) {
+      gender = classifcation[0].className.toLowerCase();
+    } else {
+      gender = classifcation[1].className.toLowerCase();
+    }
 
     detectedFace = {
-      gender: random,
+      gender: gender,
       age: 'unknown',
     };
-
   }
 
   return detectedFace;
