@@ -8,6 +8,11 @@ const app = express();
 const passport = require('passport');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const https = require('https');
+const fs = require('fs');
+
+// alternate between http & https
+const DEV_ENV = true;
 
 // Connect to DB
 connectDB();
@@ -18,7 +23,7 @@ app.use(
     secret: 'test',
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 
@@ -39,7 +44,7 @@ app.use(
   cors({
     origin: 'http://localhost', // allow to server to accept request from different origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true // allow session cookie from browser to pass through
+    credentials: true, // allow session cookie from browser to pass through
   })
 );
 
@@ -56,6 +61,16 @@ app.use('/api/user', require('./routes/api/user'));
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+if (DEV_ENV) {
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+} else {
+  https.createServer(
+    {
+      key: fs.readFileSync('$KEY'),
+      cert: fs.readFileSync('$CERT'),
+    },
+    app
+  );
+}
 
 module.exports = app; // for testing
