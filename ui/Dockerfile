@@ -1,4 +1,3 @@
-
 # build environment
 FROM node:12.2.0-alpine as build
 
@@ -48,5 +47,3 @@ EXPOSE 80
 EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]
-
-

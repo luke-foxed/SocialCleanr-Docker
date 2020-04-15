@@ -11,6 +11,9 @@
 # production
 /build
 
+# cetificate
+/letsencrypt
+
 # misc
 .DS_Store
 .env.local
