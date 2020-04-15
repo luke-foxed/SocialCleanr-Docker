@@ -130,12 +130,12 @@ router.get(
 );
 
 /**
- * @route    POST api/auth-passport/remove-site
+ * @route    PUT api/auth-passport/remove-site
  * @desc     Remove user's connection to specified site, clearing DB values
  * @access   Private
  */
 
-router.post('/remove-site', auth, async (req, res) => {
+router.put('/remove-site', auth, async (req, res) => {
   let site = req.body.site;
   try {
     let user = await User.findOneAndUpdate(
@@ -214,9 +214,9 @@ router.get('/my-twitter', auth, async (req, res) => {
     const twitterClient = new TwitterLite(twitterConfig);
 
     const options = {
-      user_id: 155659213, // --> RONALDO
-      // user_id: decryptedToken.split('-')[0]
-      count: 15,
+      // user_id: 155659213,
+      user_id: decryptedToken.split('-')[0],
+      count: 100,
       trim_user: false,
     };
 

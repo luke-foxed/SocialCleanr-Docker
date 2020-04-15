@@ -33,5 +33,5 @@ module.exports = {
   maleModelOld,
   femaleModel,
   femaleModelOld,
-  genderModel,
+  genderModel
 };

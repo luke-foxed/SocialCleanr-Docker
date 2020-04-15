@@ -12,7 +12,7 @@ const https = require('https');
 const fs = require('fs');
 
 // alternate between http & https
-const DEV_ENV = true;
+const DEV_ENV = false;
 
 // Connect to DB
 connectDB();
@@ -56,7 +56,7 @@ app.get('/', (req, res) => {
 // Define routes here
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/passport-auth', require('./routes/api/auth-passport'));
-app.use('/api/classifier', require('./routes/api/classifier'));
+app.use('/api/scan', require('./routes/api/scan'));
 app.use('/api/user', require('./routes/api/user'));
 
 const PORT = process.env.PORT || 8080;
