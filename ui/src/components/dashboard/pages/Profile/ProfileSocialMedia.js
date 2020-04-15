@@ -3,7 +3,6 @@ import {
   Typography,
   makeStyles,
   Grid,
-  Divider,
   Button,
   Avatar,
   Paper,
@@ -21,7 +20,6 @@ import { MiniDivider } from '../../../layout/MiniDivider';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(2),
@@ -63,10 +61,6 @@ export const ProfileSocialMedia = ({
 }) => {
   const classes = useStyles();
 
-  const location = window.location.href;
-  const pathArray = location.split('/');
-  const baseURL = pathArray[0] + '//' + pathArray[2];
-  
   const { is_connected_facebook, is_connected_twitter } = user;
 
   const ProfileAuthenticationText = ({ website }) => {
@@ -138,7 +132,7 @@ export const ProfileSocialMedia = ({
                 }
                 disabled={is_connected_facebook}>
                 <a
-                  href={`${baseURL}/api/passport-auth/login-facebook/${user._id}`}
+                  href={`http://localhost:5000/api/passport-auth/login-facebook/${user._id}`}
                   target='_self'
                   style={
                     is_connected_facebook
@@ -199,7 +193,7 @@ export const ProfileSocialMedia = ({
                 }
                 disabled={is_connected_twitter}>
                 <a
-                  href={`${baseURL}/api/passport-auth/login-twitter/${user._id}`}
+                  href={`http://localhost:5000/api/passport-auth/login-twitter/${user._id}`}
                   target='_self'
                   style={
                     is_connected_twitter
