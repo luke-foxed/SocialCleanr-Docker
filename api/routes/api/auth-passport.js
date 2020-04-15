@@ -9,7 +9,7 @@ const User = require('../../models/User');
 const generalHelpers = require('../../helpers/generalHelpers');
 const parseHelpers = require('../../helpers/parseHelpers');
 
-const SUCCESS_REDIRECT = 'http://localhost/dashboard';
+const SUCCESS_REDIRECT = 'https://socialcleanr.ie/dashboard';
 
 var twitterConfig = {
   consumer_key: config.get('twitterAPIKey'),

@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const config = require('config');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -20,7 +21,7 @@ connectDB();
 // Init session (needed for OAuth)
 app.use(
   session({
-    secret: 'test',
+    secret: config.get('mongoStoreSecret'),
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
     resave: true,
     saveUninitialized: true,
@@ -39,7 +40,6 @@ app.use(bodyParser.urlencoded({ extended: false })); // support encoded bodies
 app.use(express.json({ extended: false }));
 app.use(cookieParser());
 
-// Fix cors error
 app.use(
   cors({
     origin: 'http://localhost', // allow to server to accept request from different origin
@@ -64,13 +64,19 @@ const PORT = process.env.PORT || 8080;
 if (DEV_ENV) {
   app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 } else {
-  https.createServer(
-    {
-      key: fs.readFileSync('$KEY'),
-      cert: fs.readFileSync('$CERT'),
-    },
-    app
-  );
+  https
+    .createServer(
+      {
+        key: fs.readFileSync(config.get('certKey')),
+        cert: fs.readFileSync(config.get('cert')),
+      },
+      app
+    )
+    .listen(PORT, () => {
+      console.log(`HTTPS Server started on port ${PORT}`);
+    });
 }
+
+// app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 module.exports = app; // for testing

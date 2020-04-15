@@ -1,5 +1,6 @@
 import { loadImage, createCanvas } from 'canvas';
 import { getImageAsBase64 } from '../actions/scan';
+import { asyncForEach } from './generalHelpers';
 
 const helpers = require('./generalHelpers');
 
@@ -95,7 +96,7 @@ const createCanvasImage = async (base64Image) => {
 export const blurAllContent = async (image, boxes) => {
   let cleanedImage = image;
 
-  await helpers.asyncForEach(boxes, async (box) => {
+  await asyncForEach(boxes, async (box) => {
     cleanedImage = await drawBlurringBox(cleanedImage, box);
   });
 
